@@ -1,14 +1,8 @@
-'''###########################################################################################################################################
-###  Code Ownership : Meet Vankar                                                                                                          ###
-###  Project : Interactive Face Recognition System and DBMS                                                                                ###
-###########################################################################################################################################'''
-
-
-# This kind of imports are done to save Memory-Space upon execution
-import PySimpleGUI as GUI, cv2 as cv, os, Stage0_Parameters as S0P
-from pandas import DataFrame as pd_DataFrame, read_excel as pd_read_excel, concat as pd_concat
-from shutil import rmtree as shutil_rmtree
-from time import sleep as time_sleep
+# Imports
+import PySimpleGUI as GUI, cv2 as cv, os, Stage0_Cleanup_Initiation as S0P; 
+from pandas import DataFrame as pd_DataFrame, read_excel as pd_read_excel, concat as pd_concat; 
+from shutil import rmtree as shutil_rmtree; 
+from time import sleep as time_sleep; 
 
 
 # These two lines are to recreate temp-folder to erase its previous data
@@ -21,6 +15,7 @@ img_count = 0;
 print('''\nStarting taking pictures. 
 Please look at the camera. 
 Tilt your face in different directions and give some mild expressions.\n'''); 
+time_sleep(3); 
 video_cap = cv.VideoCapture(0,cv.CAP_DSHOW); 
 
 
@@ -30,7 +25,7 @@ while(True):
     ret_val, img_frame = video_cap.read();                                  # Read each frame
     img_frame = cv.flip(img_frame,1,0);                                     # Mirror the frame
     gray_frame = cv.cvtColor(img_frame, cv.COLOR_BGR2GRAY);                 # Convert to black&white
-    img_resized_frame = cv.resize(gray_frame, ((S0P.img_width)//(S0P.size),(S0P.img_height)//(S0P.size)));        # Resize to save memory
+    img_resized_frame = cv.resize(gray_frame, ((S0P.img_width)//(S0P.size),(S0P.img_height)//(S0P.size)));              # Resize to save memory
     faces = S0P.face_cascade.detectMultiScale(img_resized_frame, scaleFactor=S0P.scale_factor); faces = sorted(faces, key=lambda x:x[3]); 
     # Above line detects face's coordinates, using "HAAR-Cascade"
 
@@ -38,7 +33,7 @@ while(True):
         img_count+=1
         (x,y,w,h) = [i*(S0P.size) for i in faces[0]];                       # Extract face coordinates 
         face = gray_frame[y:y+h,x:x+w];                                     # Extract face
-        face_resized = cv.resize(face, ((S0P.img_width)//(S0P.size),(S0P.img_height)//(S0P.size)));             # Resize
+        face_resized = cv.resize(face, ((S0P.img_width)//(S0P.size),(S0P.img_height)//(S0P.size)));                     # Resize
         
         cv.imwrite('%s/%s.png' % (S0P.temp_dir_path, ( '0'*(2-len(str(img_count)))+str(img_count) )), face_resized);    # Save images in the folder
         cv.rectangle(img_frame, (x,y), (x+w,y+h), (0,0,0), 2);              # Draw rectangle around face
@@ -46,13 +41,12 @@ while(True):
         time_sleep(capture_delay);                                          # Adjust capturing duration to accomodate different angles of viewer
 
 
-
     ### Database File & Information Related Section - Begins
     if(img_count>=S0P.image_count):
         video_cap.release(); cv.destroyAllWindows();                        # Close all OpenCV windows
 
         New_Record_Dict={}; j=0;                                            # Dict will contain column-header:entry pairs  &  j=iterable
-        df = pd_read_excel(S0P.file_name, index_col=0, sheet_name=S0P.sheet_name);    # Read excel file  &  df=DataFrame
+        df = pd_read_excel(S0P.file_name, index_col=0, sheet_name=S0P.sheet_name); 
         excel_cols = df.columns;                                            # Store its columns headers
         max_col_len = max(len(col) for col in excel_cols);                  # To be used in API
 
@@ -85,4 +79,4 @@ while(True):
 print(str(img_count) + " number of images are taken. They are stored at : '" + os.path.join(S0P.dir_name,person_rollno + ' ' + person_name + "' location.")); 
 print("The corresponding record for ", person_name, " with roll number ", person_rollno, " is added to the database file ", S0P.file_name, "."); 
 
-exit=input("\nClick on Close(X) button to exit.\n")
+exit=input("\nClick on Close(X) button of the Program-Execution window to exit.\n"); 
