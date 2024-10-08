@@ -1,13 +1,7 @@
-'''###########################################################################################################################################
-###  Code Ownership : Meet Vankar                                                                                                          ###
-###  Project : Interactive Face Recognition System and DBMS                                                                                ###
-###########################################################################################################################################'''
-
-
-# This kind of imports are done to save Memory-Space upon execution
-import cv2 as cv, os, pickle, Stage0_Parameters as S0P
-from shutil import rmtree as shutil_rmtree
-from numpy import array as nparray
+# Imports
+import cv2 as cv, os, pickle, Stage0_Cleanup_Initiation as S0P; 
+from shutil import rmtree as shutil_rmtree; 
+from numpy import array as nparray; 
 
 # Remove temporary directory as it shouldn't count in training
 temp_dir_name = os.path.join(S0P.dir_name,S0P.temp_dir_name); 
@@ -32,10 +26,10 @@ for root,dirs,files in os.walk(S0P.dir_name):           # For every subfolder in
 
 
 
-trained_model = cv.face.LBPHFaceRecognizer_create()                 # Creating to train the model
-trained_model.train(nparray(x_trains), nparray(y_labels))           # Training the model
-trained_model.save("Trained_Model.yml")                             # Saving the trained model
-with open("labels.pickle", 'wb') as f: pickle.dump(hash_map,f)      # Saving data for trained model
+trained_model = cv.face.LBPHFaceRecognizer_create();                # Creating to train the model
+trained_model.train(nparray(x_trains), nparray(y_labels));          # Training the model
+trained_model.save("Trained_Model.yml");                            # Saving the trained model
+with open("labels.pickle", 'wb') as f: pickle.dump(hash_map,f);     # Saving data for trained model
 
-os.mkdir(temp_dir_name)
-exit=input("\nTraining Completed. Press Enter to Exit.\n")
+os.mkdir(temp_dir_name); 
+exit=input("\nClick on Close(X) button of the Program-Execution window to exit.\n"); 
