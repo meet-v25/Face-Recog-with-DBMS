@@ -1,15 +1,9 @@
-'''###########################################################################################################################################
-###  Code Ownership : Meet Vankar                                                                                                          ###
-###  Project : Interactive Face Recognition System and DBMS                                                                                ###
-###########################################################################################################################################'''
+# Imports
+import cv2 as cv, Stage0_Cleanup_Initiation as S0P; 
+from pickle import load as pickle_load; 
 
-
-# This kind of imports are done to save Memory-Space upon execution
-import cv2 as cv, Stage0_Parameters as S0P
-from pickle import load as pickle_load
-
-trained_model = cv.face.LBPHFaceRecognizer_create()     # Load model to identify a face
-trained_model.read("./Trained_Model.yml")
+trained_model = cv.face.LBPHFaceRecognizer_create();    # Load model to identify a face
+trained_model.read("./Trained_Model.yml"); 
    
 max_face_error = S0P.max_face_error;                    # Maximum acceptable "ERROR" to correctly assign predicted face
 font = cv.FONT_HERSHEY_SIMPLEX; 
@@ -19,12 +13,12 @@ with open("labels.pickle", 'rb') as f:                  # Load saved data
     saved_labels = pickle_load(f); 
     labels = {k:v for k,v in saved_labels.items()}; 
 
-choice = input("\nDo you want to display maximum acceptable face error for once? (y/n) : ")
+choice = input("\nDo you want to display maximum acceptable face error for once? (y/n) : "); 
 if(S0P.is_yes(choice)): print("Max Face Error that is acceptable =", S0P.max_face_error); 
 
-choice = input("\nDo you want to display face-error values for each test? (y/n) : ")
-print("\nStarting the camera.")
-print("\nClick on Close-Button(X) to exit.")
+choice = input("\nDo you want to display face-error values for each test? (y/n) : "); 
+print("\nStarting the camera."); 
+print("\nClick on Close-Button(X) to exit."); 
 
 if(S0P.is_yes(choice)): print("\n\nFace Error values will be printed below : \n"); 
 video_cap = cv.VideoCapture(0); 
@@ -35,7 +29,7 @@ while(True):
     ret_val, img_frame = video_cap.read(); 
     img_frame = cv.flip(img_frame,1,0); 
     gray_frame = cv.cvtColor(img_frame, cv.COLOR_BGR2GRAY); 
-    img_resized_frame = cv.resize(gray_frame,  ((S0P.img_width)//(S0P.size),(S0P.img_height)//(S0P.size))); 
+    img_resized_frame = cv.resize(gray_frame, ((S0P.img_width)//(S0P.size), (S0P.img_height)//(S0P.size))); 
     faces = S0P.face_cascade.detectMultiScale(img_resized_frame,scaleFactor=S0P.scale_factor); 
     
 
@@ -57,3 +51,4 @@ while(True):
     if(cv.waitKey(S0P.key_press_delay) == 27): break;           # Stop the program if ESC key is pressed, or CLOSE button is pressed
 
 video_cap.release(); cv.destroyAllWindows(); 
+exit=input("\nClick on Close(X) button of the Program-Execution window to exit.\n"); 
