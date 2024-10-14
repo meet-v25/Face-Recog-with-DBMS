@@ -1,14 +1,8 @@
-'''###########################################################################################################################################
-###  Code Ownership : Meet Vankar                                                                                                          ###
-###  Project : Interactive Face Recognition System and DBMS                                                                                ###
-###########################################################################################################################################'''
-
-
-# This kind of imports are done to save Memory-Space upon execution
-import PySimpleGUI as GUI, pandas as pd, Stage0_Parameters as S0P
-from shutil import rmtree as shutil_rmtree
-from numpy import nan as NaN
-from os import path as OSpath
+# Imports
+import PySimpleGUI as GUI, pandas as pd, Stage0_Cleanup_Initiation as S0P; 
+from shutil import rmtree as shutil_rmtree; 
+from numpy import nan as NaN; 
+from os import path as OSpath; 
 
 
 
@@ -18,10 +12,10 @@ def Insert_Cols():
     df = pd.read_excel(S0P.file_name, index_col=0, sheet_name=S0P.sheet_name); df_rows = len(df.index); 
     new_cols_dict={}; new_cols_lst=[];      # Dict to store pairs col_name:[col_vals]    &   corresponding col_names are in list
 
-    print("\nYou can add Columns only. Manual Row-addition is not allowed for data-conservation purpose."); 
+    print("\nYou can add Columns only. Manual Row-addition idds not allowed for data-conservation purpose."); 
     print("\nCurrent dataset in excel has the following columns : "); 
     for i in list(df.columns): print(f'< {i} >', end='  '); 
-    print()
+    print(); 
 
     while(True):
         try: n = int(input("\nEnter the 'Number' of columns you want to add : ")); print(); break; 
@@ -143,7 +137,7 @@ def Delete_Rows():
         df.reset_index(inplace=True, drop=True); df.index+=1;                       # To start indexing from 1
         
         while(True):
-          try: df.to_excel(S0P.file_name, sheet_name=S0P.sheet_name); break
+          try: df.to_excel(S0P.file_name, sheet_name=S0P.sheet_name); break; 
           except PermissionError: closed = input("\nThe file is open. Please close it & press Enter to process the updates to the file."); continue; 
         
         print("\nDeletion completed. Database Excel file updated."); 
@@ -190,7 +184,7 @@ def Locate_Remove_Missing_Values():
             if(choice=='1'): 
                 print("\nCurrent columns in the database are as follows : "); 
                 for i in list(df.columns): print(f'< {i} >', end='    '); 
-                print()
+                print(); 
                 
                 while(True):
                     col_name = input("\nEnter the Column-Name that you want to delete with-respect-to : "); 
